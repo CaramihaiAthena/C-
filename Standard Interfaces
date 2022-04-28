@@ -1,0 +1,70 @@
+using System;
+
+namespace NameSpaceProgram
+{
+	internal class Program
+	{
+		internal class Person : IComparable<Person>
+		{
+			#region Properties
+			public string Name { get; set; }
+			public int Age { get; set; }
+			#endregion
+
+			public Person(string name, int age)
+			{
+				Name = name;
+				Age = age;
+			}
+			public int CompareTo(Person other)
+			{
+				//Note: string.CompareTo is culture-specific
+				return Name.CompareTo(other.Name);
+			}
+		}
+		internal class Student : Person
+		{
+			public int[] Marks { get; set; }
+
+			public Student(string name, int age, int[] marks) : base(name, age)
+			{
+				Marks = marks;
+			}
+		}
+		private static void ReferenceTypeArray()
+		{
+			var p1 = new Person("Name3", 42);
+			var p2 = new Person("Name1", 23);
+			var p3 = new Person("Name2", 32);
+
+			var pArray = new Person[] { p1, p2, p3 };
+
+			Array.Sort(pArray);
+
+			//IComparable implementation is called automatically by methods such as Array..::.Sort
+
+			foreach (var person in pArray)
+			{
+				Console.WriteLine(person);
+			}
+		}
+		private static void ShallowCopyEqualOperator()
+		{
+			var p1 = new Student("Name 1", 21, new[] { 10, 10, 10 });
+			var p2 = p1;
+
+			p1.Age = 12;
+			p1.Marks[0] = 2;
+
+			Console.WriteLine(p1);
+			Console.WriteLine(p2);
+		}
+		static void Main(string[] args)
+
+        {
+			ReferenceTypeArray();
+			//ShallowCopyEqualOperator();
+
+		}
+    }
+}
